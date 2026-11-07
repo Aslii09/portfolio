@@ -568,6 +568,34 @@ function initGalleryModal() {
       if (e.key === "ArrowRight") nextSlide();
     }
   });
+
+  // Touch swipe gestures for mobile phones & tablets
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  modal.addEventListener(
+    "touchstart",
+    (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    },
+    { passive: true }
+  );
+
+  modal.addEventListener(
+    "touchend",
+    (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > 45) {
+        if (diff > 0) {
+          nextSlide(); // swipe left -> next slide
+        } else {
+          prevSlide(); // swipe right -> previous slide
+        }
+      }
+    },
+    { passive: true }
+  );
 }
 
 function openGallery(project) {
